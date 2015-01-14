@@ -27,6 +27,7 @@ I'm doing this to LEARN. Your feedback and corrections are absolutely welcome!
 
 ## 目录说明 ##
 
+~~~
 ├─src  -------------------- 源码目录
 │    ├─main
 │    │    └─web ------------- web根目录
@@ -50,6 +51,7 @@ I'm doing this to LEARN. Your feedback and corrections are absolutely welcome!
     └─web ------------- web根目录
        ├─www  ---- 构建输出中间目录
        └─platform ---- cordova项目
+~~~
 
 ## gulp 构建流说明 ##
 1. 创建app目录下cordova项目(recreate 或 cdvcreate，差异cdvcreate不采用src目录下的config.xml文件)
