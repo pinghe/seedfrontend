@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JavaScript前端原型模板项目</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <script src="vendor/require/require.min.js" data-main="main.js"></script>
+    <style>
+        .ms-controller, .ms-important {
+            visibility: hidden;
+        }
+    </style>
+
+</head>
+<body ms-controller="pageroute">
+<div ms-include-src="header"></div>
+<div ms-include-src="body"></div>
+<div ms-include-src="footer"></div>
+</body>
+</html>

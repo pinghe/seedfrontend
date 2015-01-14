@@ -1,0 +1,8 @@
+<div ms-controller="homebodyid">
+    <div id="logedusername">已登录用户：{{user.name}} </div>
+    <div>登录时间：{{user.logintime}} </div>
+    <input  id="logout" type="button" ms-click="logout" value="注销"/>
+    <div><a href="#!/login">login</a></div>
+    <div ms-include-src="menu"></div>
+    <div ms-include-src="content"></div>
+</div>

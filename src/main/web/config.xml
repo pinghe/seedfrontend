@@ -1,0 +1,12 @@
+<?xml version='1.1' encoding='utf-8'?>
+<widget id="com.imeditron.app.SeedPrjFrontend" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>seedprjfrontend</name>
+    <description>
+        A sample Apache Cordova application that responds to the deviceready event.
+    </description>
+    <author email="mzhx.meng@gmail.com" href="http://www.imeditron.com">
+        Apache Cordova Team
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+</widget>

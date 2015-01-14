@@ -1,0 +1,88 @@
+{
+  "name": "seedprjfrontend",
+  "version": "0.0.1",
+  "description": "前端js原型项目.",
+  "main": "main.js",
+  "scripts": {
+    "test": "gulp itest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://115.29.138.130/gitbucket/git/mengzhx/seedprjfrontend.git"
+  },
+  "keywords": [
+    "Cordova",
+    "Gulp"
+  ],
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "author": "mengzhx <mzhx.meng@gmail.com>",
+  "license": "Apache version 2.0",
+  "devDependencies": {
+    "ecstatic": "^0.5.8",
+    "format": "^0.2.1",
+    "intern": "^2.2.2",
+    "chromedriver": "^2.12.0",
+    "selenium-server-standalone-jar": "^2.44.0",
+    "selenium-webdriver": "^2.44.0",
+    "sinon": "^1.12.2",
+    "bluebird": "^2.6.0",
+    "requirejs": "^2.1.15",
+    "ftps": "^0.2.8",
+    "node-sftp": "^0.1.1",
+    "browser-sync": "^1.8.0",
+    "amd-optimize": "^0.4.0",
+    "merge-stream": "^0.1.6",
+    "event-stream": "^3.1.7",
+    "q": "^1.1.2",
+    "del": "^1.1.0",
+    "graceful-fs": "^3.0.5",
+    "streamqueue": "^0.1.1",
+    "minimist": "^1.1.0",
+    "cordova-lib": "^4.1.2",
+    "gulp": "^3.8.10",
+    "gulp-replace": "^0.5.0",
+    "gulp-load-plugins": "^0.8.0",
+    "gulp-coffee": "^2.2.0",
+    "gulp-concat": "^2.4.2",
+    "gulp-uglify": "^1.0.2",
+    "gulp-requirejs": "^0.1.3",
+    "gulp-sourcemaps": "^1.2.8",
+    "gulp-less": "^2.0.1",
+    "gulp-autoprefixer": "^2.0.0",
+    "gulp-if": "^1.2.5",
+    "gulp-order": "^1.1.1",
+    "gulp-traceur": "^0.14.1",
+    "gulp-sass": "^1.2.4",
+    "gulp-util": "^3.0.1",
+    "gulp-plumber": "^0.6.6",
+    "gulp-cond": "^0.0.2",    
+    "gulp-imagemin": "^2.0.0",
+    "gulp-rimraf": "^0.1.1",
+    "gulp-notify": "^2.1.0",
+    "gulp-rename": "^1.2.0",
+    "gulp-minify-css": "^0.3.11",
+    "gulp-htmlmin": "^0.2.0",
+    "gulp-cached": "^1.0.1",
+    "gulp-changed": "^1.1.0",
+    "gulp-remember": "^0.3.0",
+    "gulp-watch": "^3.0.0",
+    "gulp-sftp": "^0.1.4",
+    "gulp-shell": "^0.2.11",
+    "gulp-open": "^0.3.1",
+    "gulp-livereload": "^3.0.2",
+    "gulp-traceur": "^0.14.1",
+    "gulp-spawn": "^0.3.0",
+    "gulp-jshint": "^1.9.0"
+
+  },
+  "dependencies": {
+    "cordova-android": "^3.6.4",
+    "cordova-browser": "^3.6.0"
+  },
+  "cordovaplugins": [
+    "org.apache.cordova.file"
+  ],
+  "appId": "Seedprjfrontend"
+}
