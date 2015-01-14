@@ -22,7 +22,7 @@ I'm doing this to LEARN. Your feedback and corrections are absolutely welcome!
 1. 支持js、coffee脚本
 1. 支持css、less、sass 文件
 1. 支持三种应用场景，浏览器，移动app
-1. 支持生成环境，即可将js合并压缩成单个js文件，优化css文件，优化html文件
+1. 支持生产环境，即可将js合并压缩成单个js文件，优化css文件，优化html文件
 1. 支持DevOps
 
 ## 目录说明 ##
