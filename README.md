@@ -97,7 +97,7 @@ npm update bower -g
 ~~~
 
 ## 获取种子项目或研发项目
-克隆[seedfrontend](https://github.com/pinghe/seedfrontend.git),将相关文件拷贝到新建项目中。
+fork[seedfrontend](https://github.com/pinghe/seedfrontend.git),clone到本机。
 执行项目命令，会自动安装相关插件。
 
 ~~~
