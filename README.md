@@ -1,8 +1,11 @@
 ## seedprjfrontend ##
 
 [Avalon.js](https://github.com/RubyLouvre/avalon) is a lightweight、high-performance and easy-to-follow javascript MVVM framework.
+
 [Intern.js](http://theintern.io/) is a new testing framework that supports **unit testing**, **behavior testing** and **functional testing**. 
+
 The purpose of this project is, to create a SPA that can run in your browser and mobile environment using an [Avalon.js](https://angularjs.org/) and [cordova](cordova.apache.org) project and the [Gulp.js](http://gulpjs.com/) task runners.
+
 I'm doing this to LEARN. Your feedback and corrections are absolutely welcome!
 
 -----
