@@ -8,25 +8,27 @@ The purpose of this project is, to create a SPA that can run in your browser and
 
 I'm doing this to LEARN. Your feedback and corrections are absolutely welcome!
 
------
+---------
 
 这是一个javascript前端项目模板。
 
 目的提供一个项目模板，减轻开发环境搭建工作，常用解决方案展示。
 
-此原型项目展示了：
-1. 支持cordova、browser应用，即同一套代码可用于桌面浏览器和各类手机应用。
-1. 使用avalon MVVM框架
-1. 使用cordova 用于移动端
-1. 使用requirejs amd模块加载器
-1. 使用gulp构建系统
-1. 展示了页面切分和逻辑模块划分（html、css、js），及如何根据实际切换模块。适用团队分工合作
-1. 页面路由技术，页面转换的有限状态机应用。
-1. 支持js、coffee脚本
-1. 支持css、less、sass 文件
-1. 支持三种应用场景，浏览器，移动app
-1. 支持生产环境，即可将js合并压缩成单个js文件，优化css文件，优化html文件
-1. 支持DevOps
+### 此原型项目展示了
+
+1.  支持cordova、browser应用，即同一套代码可用于桌面浏览器和各类手机应用。
+1.  使用avalon MVVM框架
+1.  使用cordova 用于移动端
+1.  使用requirejs amd模块加载器
+1.  使用gulp构建系统
+1.  展示了页面切分和逻辑模块划分（html、css、js），及如何根据实际切换模块。适用团队分工合作
+1.  页面路由技术，页面转换的有限状态机应用。
+1.  支持js、coffee脚本
+1.  支持css、less、sass 文件
+1.  支持三种应用场景，浏览器，移动app
+1.  支持生产环境，即可将js合并压缩成单个js文件，优化css文件，优化html文件
+1.  支持DevOps
+
 
 ## 目录说明 ##
 
