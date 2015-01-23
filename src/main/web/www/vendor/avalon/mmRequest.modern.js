@@ -13,6 +13,7 @@ var rnoContent = /^(?:GET|HEAD)$/
 var rprotocol = /^\/\//
 var rhash = /#.*$/
 var rquery = /\?/
+var rjsonp = /(=)\?(?=&|$)|\?\?/
 var r20 = /%20/g
 
 var originAnchor = document.createElement("a")
@@ -48,6 +49,13 @@ function parseJS(code) {
         } else {
             indirect(code)
         }
+    }
+}
+
+if (!String.prototype.startsWith) {
+    String.prototype.startsWith = function(searchString, position) {
+        position = position || 0;
+        return this.lastIndexOf(searchString, position) === position;
     }
 }
 
@@ -183,7 +191,7 @@ var XHRMethods = {
                 //如果浏览器能直接返回转换好的数据就最好不过,否则需要手动转换
                 if (typeof this.response === "undefined") {
                     var dataType = this.options.dataType || this.options.mimeType
-                    if (!dataType) { //如果没有指定dataType，则根据mimeType或Content-Type进行揣测
+                    if (this.responseText || this.responseXML || !dataType) { //如果没有指定dataType，则根据mimeType或Content-Type进行揣测
                         dataType = this.getResponseHeader("Content-Type") || ""
                         dataType = dataType.match(/json|xml|script|html/) || ["text"]
                         dataType = dataType[0];
@@ -206,12 +214,22 @@ var XHRMethods = {
         }
         this._transport = this.transport;
         // 到这要么成功，调用success, 要么失败，调用 error, 最终都会调用 complete
+        var successFn = this.options.success,
+            errorFn = this.options.error,
+            completeFn = this.options.complete
+
         if (isSuccess) {
+            avalon.log("成功加载数据")
+            if (typeof successFn === "function") {
+                successFn.call(this, this.response, statusText, this)
+            }
             this._resolve(this.response, statusText, this)
         } else {
+            if (typeof errorFn === "function") {
+                errorFn.call(this, statusText, this.error || statusText)
+            }
             this._reject(this, statusText, this.error || statusText)
         }
-        var completeFn = this.options.complete
         if (typeof completeFn === "function") {
             completeFn.call(this, this, statusText)
         }
@@ -245,15 +263,11 @@ avalon.ajax = function(opts, promise) {
     promise._resolve = _resolve
 
     avalon.mix(promise, XHRProperties, XHRMethods)
-    promise.then(opts.success, opts.error)
-    "success error".replace(avalon.rword, function(name) { //绑定回调
-        delete opts[name]
-    })
 
     var dataType = opts.dataType  //目标返回数据类型
     var transports = avalon.ajaxTransports
 
-    if (opts.crossDomain && !supportCors && dataType === "json" && opts.type === "GET" ) {
+    if ((opts.crossDomain && !supportCors || rjsonp.test(opts.url)) && dataType === "json" && opts.type === "GET") {
         dataType = opts.dataType = "jsonp"
     }
     var name = opts.form ? "upload" : dataType
@@ -339,8 +353,14 @@ avalon.ajaxConverters = {//转换器，返回用户想要做的数据
         parseJS(text)
     },
     jsonp: function() {
-        var json = avalon[this.jsonpCallback];
-        delete avalon[this.jsonpCallback];
+        var json, callbackName;
+        if (this.jsonpCallback.startsWith('avalon.')) {
+            callbackName = this.jsonpCallback.replace(/avalon\./,'')
+            json = avalon[callbackName]
+            delete avalon[callbackName]
+        } else {
+            json = window[this.jsonpCallback]
+        }
         return json;
     }
 }
@@ -421,7 +441,10 @@ avalon.unparam = function(url, query) {
 
 var rinput = /select|input|button|textarea/i
 var rcheckbox = /radio|checkbox/
-var rCRLF = /\r?\n/g
+var rline = /\r?\n/g
+function trimLine(val) {
+    return val.replace(rline, "\r\n")
+}
 //表单元素变字符串, form为一个元素节点
 avalon.serialize = function(form) {
     var json = {};
@@ -431,15 +454,18 @@ avalon.serialize = function(form) {
             return  rcheckbox.test(el.type) ? el.checked : true //只处理拥有name并且没有disabled的表单元素
         }
     }).forEach(function(el) {
-        var val = avalon(el).val(),
-                vs;
-        val = Array.isArray(val) ? val : typeof val === "string" ? [val] : [];
-        val = val.map(function(v) {
-            return v.replace(rCRLF, "\r\n")
-        })
-        // 全部搞成数组，防止同名
-        vs = json[el.name] || (json[el.name] = [])
-        vs.push.apply(vs, val)
+        var val = avalon(el).val()
+        val = Array.isArray(val) ? val.map(trimLine) : trimLine(val)
+        var name = el.name
+        if (name in json) {
+            if (Array.isArray(val)) {
+                json[name].push(val)
+            } else {
+                json[name] = [json[name], val]
+            }
+        } else {
+            json[name] = val
+        }
     })
     return avalon.param(json, false)  // 名值键值对序列化,数组元素名字前不加 []
 }
@@ -514,12 +540,23 @@ var transports = avalon.ajaxTransports = {
     jsonp: {
         preproccess: function() {
             var opts = this.options;
-            var name = this.jsonpCallback = opts.jsonpCallback || "jsonp" + setTimeout("1")
-            opts.url = opts.url + (rquery.test(opts.url) ? "&" : "?") + opts.jsonp + "=avalon." + name
+            var name = this.jsonpCallback = opts.jsonpCallback || "avalon.jsonp" + setTimeout("1")
+            if (rjsonp.test(opts.url)) {
+                opts.url = opts.url.replace(rjsonp, "$1" + name)
+            } else {
+                opts.url = opts.url + (rquery.test(opts.url) ? "&" : "?") + opts.jsonp + "=" + name
+            }
             //将后台返回的json保存在惰性函数中
-            avalon[name] = function(json) {
-                avalon[name] = json
-            };
+            if (name.startsWith('avalon.')) {
+                name = name.replace(/avalon\./, '')
+                avalon[name] = function(json) {
+                    avalon[name] = json
+                }
+            } else {
+                window[name] = function(json) {
+                    window[name] = json
+                }
+            }
             return "script"
         }
     },
@@ -549,7 +586,8 @@ var transports = avalon.ajaxTransports = {
                 parent.removeChild(node)
             }
             if (!forceAbort) {
-                var args = typeof avalon[this.jsonpCallback] === "function" ? [500, "error"] : [200, "success"]
+                var jsonpCallback = this.jsonpCallback.startsWith('avalon.') ? avalon[this.jsonpCallback.replace(/avalon\./, '')] : window[this.jsonpCallback]
+                var args = typeof jsonpCallback === "function" ? [500, "error"] : [200, "success"]
                 this.dispatch.apply(this, args)
             }
         }
@@ -559,6 +597,7 @@ var transports = avalon.ajaxTransports = {
             var opts = this.options, formdata
             if (typeof opts.form.append === "function") { //简单判断opts.form是否为FormData
                 formdata = opts.form;
+                opts.contentType = '';
             } else {
                 formdata = new FormData(opts.form)  //将二进制什么一下子打包到formdata
             }
@@ -584,4 +623,3 @@ avalon.mix(transports.upload, transports.xhr)
  http://www.cnblogs.com/heyuquan/archive/2013/05/13/3076465.html
  2014.12.25  v4 大重构
  */
-
